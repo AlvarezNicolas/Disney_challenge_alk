@@ -31,8 +31,12 @@ public class MovieOrSerie implements Serializable {
     private Photo photo;
 
     private String titulo;
+
+    @Temporal(TemporalType.DATE)
     private LocalDate fechaDeCreacion;
+
     private Integer Calification;
+    private boolean alta;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "rel_movies_chars",

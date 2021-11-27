@@ -22,7 +22,7 @@ public class Photo implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String idFoto;
+    private String idPhoto;
     private String nombre;
     private String mime;
 
@@ -35,5 +35,8 @@ public class Photo implements Serializable {
     
     @OneToOne(mappedBy = "photos", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private MovieOrSerie movieOrSerie;
+    
+    @OneToOne(mappedBy = "photos", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private User user;
 
 }

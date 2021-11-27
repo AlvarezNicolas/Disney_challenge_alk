@@ -5,8 +5,8 @@
  */
 package Disney.DisneyWorld.entity;
 
+import Disney.DisneyWorld.enums.Rol;
 import java.io.Serializable;
-import java.util.*;
 import javax.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,24 +17,27 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Data
 @Entity
-@Table(name = "characters")
-public class Character implements Serializable {
+@Table(name = "Users")
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String idCharacter;
+    private String idUser;
+
+    private String nombre;
+    private String apellido;
+    private Integer telefono;
+    private String genero;
+    private String email;
+    private String clave;
+
+    @Enumerated(value = EnumType.STRING)
+    private Rol rol;
+
+    private Boolean alta;
 
     @OneToOne
     @JoinColumn(name = "FK_PHOTO", updatable = true, nullable = true)
     private Photo photo;
-
-    private String nombre;
-    private Integer edad;
-    private Double peso;
-    private String historia;
-
-    @ManyToMany(mappedBy = "characters", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<MovieOrSerie> movieOrSerie = new ArrayList<>();
-
 }

@@ -5,13 +5,15 @@
  */
 package Disney.DisneyWorld.repository;
 
-import Disney.DisneyWorld.entity.Character;
+import Disney.DisneyWorld.entity.Figure;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author anico
  */
-public interface CharacterRepository extends JpaRepository<Character, String>{
+@Repository
+public interface FigureRepository extends JpaRepository<Figure, String>{
     
 }
