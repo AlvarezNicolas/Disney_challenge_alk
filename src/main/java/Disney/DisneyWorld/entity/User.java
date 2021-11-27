@@ -29,7 +29,10 @@ public class User implements Serializable {
     private String apellido;
     private Integer telefono;
     private String genero;
+    
+    @Column(nullable = false, unique = true)
     private String email;
+    
     private String clave;
 
     @Enumerated(value = EnumType.STRING)

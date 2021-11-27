@@ -35,6 +35,11 @@ public class UserService {
 
     @Transactional
     public void createUser(MultipartFile file, String nombre, String apellido, Integer telefono, String genero, String email, String clave) throws ErrorService {
+        
+        if (userRepository.findByEmail(email) != null) {
+            throw new ErrorService("El email que esta utilizando ya se encuentra asociado a otro usuario");
+        }
+        
         try {
             User user = new User();
             user.setNombre(nombre);
