@@ -34,12 +34,14 @@ public class UserService {
     private MailSenderService mailSender;
 
     @Transactional
-    public void createUser(MultipartFile file, String nombre, String apellido, Integer telefono, String genero, String email, String clave) throws ErrorService {
-        
+    public void createUser(MultipartFile file, String nombre, String apellido, Integer telefono, String genero, String email, String clave1, String clave2) throws ErrorService {
+
         if (userRepository.findByEmail(email) != null) {
             throw new ErrorService("El email que esta utilizando ya se encuentra asociado a otro usuario");
         }
-        
+
+        validate(nombre, apellido, telefono, genero, email, clave1, clave2);
+
         try {
             User user = new User();
             user.setNombre(nombre);
@@ -47,7 +49,7 @@ public class UserService {
             user.setTelefono(telefono);
             user.setGenero(genero);
             user.setEmail(email);
-            String encrypted = new BCryptPasswordEncoder().encode(clave);
+            String encrypted = new BCryptPasswordEncoder().encode(clave1);
             user.setClave(encrypted);
             user.setAlta(true);
             user.setRol(Rol.USER);
@@ -67,7 +69,10 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(MultipartFile file, String nombre, String apellido, Integer telefono, String genero, String email, String clave) throws ErrorService, ErrorService {
+    public void updateUser(MultipartFile file, String nombre, String apellido, Integer telefono, String genero, String email, String clave1, String clave2) throws ErrorService, ErrorService {
+
+        validate(nombre, apellido, telefono, genero, email, clave1, clave2);
+
         try {
             User answer = userRepository.findByEmail(email);
             if (answer != null) {
@@ -77,7 +82,7 @@ public class UserService {
                 user.setTelefono(telefono);
                 user.setGenero(genero);
                 user.setEmail(email);
-                String encrypted = new BCryptPasswordEncoder().encode(clave);
+                String encrypted = new BCryptPasswordEncoder().encode(clave1);
                 user.setClave(encrypted);
                 user.setAlta(true);
 
@@ -90,10 +95,12 @@ public class UserService {
                 user.setPhoto(photo);
 
                 userRepository.save(user);
-                
+
                 mailSender.sender("Los datos se su cuenta fueron modificados exitosamente",
-                    "Modificacion de datos",
-                    user.getEmail());
+                        "Modificacion de datos",
+                        user.getEmail());
+            } else {
+                throw new ErrorService("No se ha podido encontrar el usuario con el mail indicado");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -109,7 +116,7 @@ public class UserService {
             user.setAlta(false);
 
             userRepository.save(user);
-            
+
             mailSender.sender("Lamentamos tener que despedirlo, estamos trabajando continuamente para poder ofrecer un mejor portal. Esperamos verlo nuevamente",
                     "Cuenta anulada",
                     user.getEmail());
@@ -126,12 +133,36 @@ public class UserService {
             user.setAlta(true);
 
             userRepository.save(user);
-            
+
             mailSender.sender("Nos alegra tenerlo de vuelta entre nosotros, esperamos que pueda disfrutar al máximo de nuestro portal",
                     "Cuenta rehabilitada",
                     user.getEmail());
         } else {
             throw new ErrorService("No se pudo dar de ALTA a la cuenta correspondiente al usuario indicado");
+        }
+    }
+
+    public void validate(String nombre, String apellido, Integer telefono, String genero, String email, String clave1, String clave2) throws ErrorService {
+        if (nombre == null || nombre.isEmpty()) {
+            throw new ErrorService("Debe indicar su nombre para poder registrarse");
+        }
+        if (apellido == null || apellido.isEmpty()) {
+            throw new ErrorService("Debe indicar su apellido para poder registrarse");
+        }
+        if (telefono == null) {
+            throw new ErrorService("Debe completar un número de teléfono para poder registrarse");
+        }
+        if (genero == null || genero.isEmpty()) {
+            throw new ErrorService("Debe indicar un genero para poder registrarse");
+        }
+        if (email == null || email.isEmpty()) {
+            throw new ErrorService("Debe indicar un email para poder registrarse");
+        }
+        if (clave1 == null || clave1.isEmpty() || clave1.length() <= 5) {
+            throw new ErrorService("La clave dee tener como mínimo seis caracteres");
+        }
+        if (!clave1.equals(clave2)) {
+            throw new ErrorService("Las claves no coinciden entre si");
         }
     }
 }
