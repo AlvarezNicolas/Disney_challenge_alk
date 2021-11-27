@@ -112,6 +112,17 @@ public class CharacterService {
         }
     }
     
+    @Transactional (readOnly = true)
+     public List<Figure> listCharacters(){
+        List<Figure> listCharacters = figureRepository.listCharacters();
+        return listCharacters;
+    }
+    
+    @Transactional (readOnly = true)
+     public Optional<Figure> listCharacter(String idCharacter){
+       return figureRepository.findById(idCharacter);
+    }
+    
     public void validateCreate (String nombre, Integer edad, Double peso, String historia, MovieOrSerie movieOrSerie) throws ErrorService{
         
         if (nombre == null || nombre.isEmpty()) {

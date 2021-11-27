@@ -32,7 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/auth")
 public class LoginController {
-    
+
     @Autowired
     private UserService userService;
 
@@ -59,31 +59,32 @@ public class LoginController {
 
         return mav;
     }
-    
+
     @GetMapping("/register")
     public ModelAndView register() {
         return new ModelAndView("register");
     }
 
     @PostMapping("/register")
-    public String saveUser(RedirectAttributes atributo, 
-            @RequestParam @NonNull String nombre, 
-            @RequestParam @NonNull String apellido, 
-            @RequestParam @NonNull Integer telefono, 
-            @RequestParam @NonNull String genero, 
-            @RequestParam @NonNull String emial, 
+    public String saveUser(RedirectAttributes attribute,
+            @RequestParam @NonNull String nombre,
+            @RequestParam @NonNull String apellido,
+            @RequestParam @NonNull Integer telefono,
+            @RequestParam @NonNull String genero,
+            @RequestParam @NonNull String emial,
             @RequestParam @NonNull String clave1,
             @RequestParam @NonNull String clave2,
-            @RequestParam @Nullable Photo photo) throws Exception {
+            @RequestParam @Nullable MultipartFile file) throws Exception {
         try {
-            
-            userService.createUser((MultipartFile) photo, nombre, apellido, telefono, genero, emial, clave1, clave2);
+
+            userService.createUser(file, nombre, apellido, telefono, genero, emial, clave1, clave2);
+
         } catch (ErrorService ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-            atributo.addFlashAttribute("error", ex.getMessage());
-            return "redirect:/";
+            attribute.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/auth";
         }
-        atributo.addFlashAttribute("exito", "El usuario ha sido registrado exitosamente");
-        return "redirect:/auth";
+        attribute.addFlashAttribute("exito", "El usuario ha sido registrado exitosamente");
+        return "redirect:/";
     }
 }
