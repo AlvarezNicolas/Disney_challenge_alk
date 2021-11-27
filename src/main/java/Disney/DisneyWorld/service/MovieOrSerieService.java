@@ -11,7 +11,7 @@ import Disney.DisneyWorld.entity.MovieOrSerie;
 import Disney.DisneyWorld.entity.Photo;
 import Disney.DisneyWorld.error.ErrorService;
 import Disney.DisneyWorld.repository.MovieOrSerieRepository;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class MovieOrSerieService {
     private PhotoService photoService;
 
     @Transactional
-    public void addMovie(MultipartFile file, String titulo, LocalDate fechaDeCreacion, Integer calificacion, Figure characters, Gender gender) throws ErrorService {
+    public void addMovie(MultipartFile file, String titulo, Date fechaDeCreacion, Integer calificacion, Figure characters, Gender gender) throws ErrorService {
 
         validateCreate(titulo, fechaDeCreacion, calificacion, characters, gender);
 
@@ -42,7 +42,7 @@ public class MovieOrSerieService {
             mors.setTitulo(titulo);
             mors.setFechaDeCreacion(fechaDeCreacion);
             mors.setCalification(calificacion);
-            mors.setCharacters((List<Character>) characters);
+            mors.setCharacters((List<Figure>) characters);
             mors.setGender((List<Gender>) gender);
             mors.setAlta(true);
 
@@ -58,7 +58,7 @@ public class MovieOrSerieService {
     }
 
     @Transactional
-    public void updateMovie(MultipartFile file, String idMovieOrSerie, String titulo, LocalDate fechaDeCreacion, Integer calificacion, Gender gender) throws ErrorService {
+    public void updateMovie(MultipartFile file, String idMovieOrSerie, String titulo, Date fechaDeCreacion, Integer calificacion, Gender gender) throws ErrorService {
 
         validateUpdate(titulo, fechaDeCreacion, calificacion, gender);
 
@@ -109,7 +109,7 @@ public class MovieOrSerieService {
         }
     }
 
-    public void validateCreate(String titulo, LocalDate fechaDeCreacion, Integer calificacion, Figure characters, Gender gender) throws ErrorService, ErrorService {
+    public void validateCreate(String titulo, Date fechaDeCreacion, Integer calificacion, Figure characters, Gender gender) throws ErrorService, ErrorService {
 
         if (titulo == null || titulo.isEmpty()) {
             throw new ErrorService("El titulo no puede estar vacio");
@@ -128,7 +128,7 @@ public class MovieOrSerieService {
         }
     }
 
-    public void validateUpdate(String titulo, LocalDate fechaDeCreacion, Integer calificacion, Gender gender) throws ErrorService, ErrorService {
+    public void validateUpdate(String titulo, Date fechaDeCreacion, Integer calificacion, Gender gender) throws ErrorService, ErrorService {
 
         if (titulo == null || titulo.isEmpty()) {
             throw new ErrorService("El titulo no puede estar vacio");

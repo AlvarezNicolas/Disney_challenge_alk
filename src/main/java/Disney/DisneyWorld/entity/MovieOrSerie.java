@@ -5,7 +5,6 @@
  */
 package Disney.DisneyWorld.entity;
 
-import java.time.LocalDate;
 import java.io.Serializable;
 import java.util.*;
 import javax.persistence.*;
@@ -33,7 +32,7 @@ public class MovieOrSerie implements Serializable {
     private String titulo;
 
     @Temporal(TemporalType.DATE)
-    private LocalDate fechaDeCreacion;
+    private Date fechaDeCreacion;
 
     private Integer Calification;
     private boolean alta;
@@ -42,7 +41,7 @@ public class MovieOrSerie implements Serializable {
     @JoinTable(name = "rel_movies_chars",
             joinColumns = @JoinColumn(name = "idMovieOrSerie"),
             inverseJoinColumns = @JoinColumn(name = "idCharacter", nullable = false))
-    private List<Character> characters = new ArrayList<>();
+    private List<Figure> characters = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "rel_movies_genders",
