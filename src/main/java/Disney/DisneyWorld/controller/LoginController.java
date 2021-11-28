@@ -42,7 +42,9 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public ModelAndView login(@RequestParam(required = false) String error, @RequestParam(required = false) String logout, Principal principal) {
+    public ModelAndView login(@RequestParam(required = false) String error, 
+            @RequestParam(required = false) String logout, 
+            Principal principal) {
         ModelAndView mav = new ModelAndView("login");
 
         if (error != null) {

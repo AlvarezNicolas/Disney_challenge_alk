@@ -5,12 +5,10 @@
  */
 package Disney.DisneyWorld.controller;
 
-import Disney.DisneyWorld.entity.Figure;
 import Disney.DisneyWorld.entity.MovieOrSerie;
 import Disney.DisneyWorld.error.ErrorService;
 import Disney.DisneyWorld.service.CharacterService;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.lang.Nullable;
@@ -45,15 +43,15 @@ public class CreateCharacterController {
     @PostMapping("/persistCharacter")
     public String save(RedirectAttributes attribute,
             @RequestParam @NotNull String nombre,
-            @RequestParam @Nullable Integer edad,
-            @RequestParam @Nullable Double peso,
-            @RequestParam @Nullable String historia,
+            @RequestParam @NotNull Integer edad,
+            @RequestParam @NotNull Double peso,
+            @RequestParam @NotNull String historia,
             @RequestParam @Nullable MultipartFile file,
-            @RequestParam @Nullable String movieOrSerie) throws Exception {
+            @RequestParam @NotNull MovieOrSerie movieOrSerie) throws Exception {
         try {
 
             MovieOrSerie movie = new MovieOrSerie();
-            movie.setTitulo(movieOrSerie);
+            movie.equals(movieOrSerie);
 
             characterService.addCharacter(file, nombre, edad, peso, historia, movie);
 
@@ -85,7 +83,13 @@ public class CreateCharacterController {
     }
 
     @PostMapping("/modify/{id}")
-    public String updateCharacter(RedirectAttributes attribute, @PathVariable String idCharacter, @RequestParam MultipartFile file, @RequestParam String nombre, @RequestParam Integer edad, @RequestParam Double peso, @RequestParam String historia) throws Exception {
+    public String updateCharacter(RedirectAttributes attribute, 
+            @PathVariable String idCharacter, 
+            @RequestParam MultipartFile file, 
+            @RequestParam String nombre, 
+            @RequestParam Integer edad, 
+            @RequestParam Double peso, 
+            @RequestParam String historia) throws Exception {
         try {
             characterService.updateCharacter(file, idCharacter, nombre, edad, peso, historia);
             attribute.addFlashAttribute("exito", "Los cambios del personaje se han modificadoexitosamente");

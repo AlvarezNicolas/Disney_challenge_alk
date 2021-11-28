@@ -31,7 +31,7 @@ public class ListCharacterController {
     public String listCharacters(ModelMap model){
         List<Figure> characters = characterService.listCharacters();
         model.addAttribute("characters", characters);
-        return "listCharacters";
+        return "characters";
     }
     
 }

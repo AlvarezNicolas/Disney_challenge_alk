@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FigureRepository extends JpaRepository<Figure, String>{
  
-    @Query("SELECT a from Figure a WHERE alta=1")
+    @Query("SELECT a FROM Figure a WHERE alta=1")
     public List<Figure> listCharacters();
     
     

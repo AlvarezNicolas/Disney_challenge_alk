@@ -6,7 +6,9 @@
 package Disney.DisneyWorld.repository;
 
 import Disney.DisneyWorld.entity.MovieOrSerie;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Repository;
  * @author anico
  */
 @Repository
-public interface MovieOrSerieRepository extends JpaRepository<MovieOrSerie, String>{
-    
+public interface MovieOrSerieRepository extends JpaRepository<MovieOrSerie, String> {
+
+    @Query("SELECT a FROM Figure a WHERE alta=1")
+    public List<MovieOrSerie> listMovies();
+
 }
