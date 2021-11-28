@@ -32,9 +32,9 @@ public class CharacterService {
 
     @Transactional
     public void addCharacter(MultipartFile file, String nombre, Integer edad, Double peso, String historia, MovieOrSerie movieOrSerie) throws Exception, ErrorService {
-        
+
         validateCreate(nombre, edad, peso, historia, movieOrSerie);
-        
+
         try {
             Figure character = new Figure();
 
@@ -59,7 +59,7 @@ public class CharacterService {
     public void updateCharacter(MultipartFile file, String idCharacter, String nombre, Integer edad, Double peso, String historia) throws Exception, ErrorService {
 
         validateUpdate(nombre, edad, peso, historia);
-        
+
         Optional<Figure> answer = figureRepository.findById(idCharacter);
         try {
             if (answer.isPresent()) {
@@ -98,7 +98,7 @@ public class CharacterService {
             throw new ErrorService("No se pudo dar de baja al personaje solicitado");
         }
     }
-    
+
     @Transactional
     public void enable(String idCharacter) throws ErrorService {
         Optional<Figure> answer = figureRepository.findById(idCharacter);
@@ -111,20 +111,35 @@ public class CharacterService {
             throw new ErrorService("No se puedo habilitar el personaje solicitado");
         }
     }
-    
-    @Transactional (readOnly = true)
-     public List<Figure> listCharacters(){
+
+    @Transactional(readOnly = true)
+    public List<Figure> listCharacters() {
         List<Figure> listCharacters = figureRepository.listCharacters();
         return listCharacters;
     }
-    
-    @Transactional (readOnly = true)
-     public Optional<Figure> listCharacter(String idCharacter){
-       return figureRepository.findById(idCharacter);
+
+    @Transactional(readOnly = true)
+    public Optional<Figure> listCharacter(String idCharacter) {
+        return figureRepository.findById(idCharacter);
+    }
+
+    @Transactional(readOnly = true)
+    public Figure findByName(String nombre) {
+        return figureRepository.findByName(nombre);
     }
     
-    public void validateCreate (String nombre, Integer edad, Double peso, String historia, MovieOrSerie movieOrSerie) throws ErrorService{
-        
+    @Transactional(readOnly = true)
+    public Figure findByAge(Integer edad) {
+        return figureRepository.findByAge(edad);
+    }
+    
+    @Transactional(readOnly = true)
+    public Figure findByIdMovieOrSerie(String idMovieOrSerie) {
+        return figureRepository.findByIdMoviOrSerie(idMovieOrSerie);
+    }
+
+    public void validateCreate(String nombre, Integer edad, Double peso, String historia, MovieOrSerie movieOrSerie) throws ErrorService {
+
         if (nombre == null || nombre.isEmpty()) {
             throw new ErrorService("El nombre del personaje no puede estar vacio");
         }
@@ -141,9 +156,9 @@ public class CharacterService {
             throw new ErrorService("Por favor indique al menos una serie o película en donde actúe el personaje mencionado");
         }
     }
-    
-    public void validateUpdate (String nombre, Integer edad, Double peso, String historia) throws ErrorService{
-        
+
+    public void validateUpdate(String nombre, Integer edad, Double peso, String historia) throws ErrorService {
+
         if (nombre == null || nombre.isEmpty()) {
             throw new ErrorService("El nombre del personaje no puede estar vacio");
         }

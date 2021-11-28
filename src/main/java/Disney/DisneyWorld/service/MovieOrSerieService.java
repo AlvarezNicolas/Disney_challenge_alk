@@ -33,11 +33,11 @@ public class MovieOrSerieService {
     private PhotoService photoService;
 
     @Transactional
-    public void addMovie(MultipartFile file, 
-            String titulo, 
-            Date fechaDeCreacion, 
-            Integer calificacion, 
-            Figure characters, 
+    public void addMovie(MultipartFile file,
+            String titulo,
+            Date fechaDeCreacion,
+            Integer calificacion,
+            Figure characters,
             Gender gender) throws ErrorService {
 
         validateCreate(titulo, fechaDeCreacion, calificacion, characters, gender);
@@ -63,11 +63,11 @@ public class MovieOrSerieService {
     }
 
     @Transactional
-    public void updateMovie(MultipartFile file, 
-            String idMovieOrSerie, 
-            String titulo, 
-            Date fechaDeCreacion, 
-            Integer calificacion, 
+    public void updateMovie(MultipartFile file,
+            String idMovieOrSerie,
+            String titulo,
+            Date fechaDeCreacion,
+            Integer calificacion,
             Gender gender) throws ErrorService {
 
         validateUpdate(titulo, fechaDeCreacion, calificacion, gender);
@@ -118,22 +118,42 @@ public class MovieOrSerieService {
             throw new ErrorService("No se pudo dar de alta a la película o serie solicitada");
         }
     }
-    
-    @Transactional (readOnly = true)
-     public List<MovieOrSerie> listMovies(){
+
+    @Transactional(readOnly = true)
+    public List<MovieOrSerie> listMovies() {
         List<MovieOrSerie> listMovies = movieOrSerieRepository.listMovies();
         return listMovies;
     }
-    
-    @Transactional (readOnly = true)
-     public Optional<MovieOrSerie> listMovie(String idMovieOrSerie){
-       return movieOrSerieRepository.findById(idMovieOrSerie);
+
+    @Transactional(readOnly = true)
+    public Optional<MovieOrSerie> listMovie(String idMovieOrSerie) {
+        return movieOrSerieRepository.findById(idMovieOrSerie);
     }
 
-    public void validateCreate(String titulo, 
-            Date fechaDeCreacion, 
-            Integer calificacion, 
-            Figure characters, 
+    @Transactional(readOnly = true)
+    public MovieOrSerie findByName(String titulo) {
+        return movieOrSerieRepository.findByName(titulo);
+    }
+
+    @Transactional(readOnly = true)
+    public MovieOrSerie findByIdGender(String IdGender) {
+        return (MovieOrSerie) movieOrSerieRepository.findByIdGender(IdGender);
+    }
+
+    @Transactional(readOnly = true)
+    public MovieOrSerie OrderASC() {
+        return (MovieOrSerie) movieOrSerieRepository.OrderASC();
+    }
+
+    @Transactional(readOnly = true)
+    public MovieOrSerie OrderDESC() {
+        return (MovieOrSerie) movieOrSerieRepository.OrderDESC();
+    }
+
+    public void validateCreate(String titulo,
+            Date fechaDeCreacion,
+            Integer calificacion,
+            Figure characters,
             Gender gender) throws ErrorService, ErrorService {
 
         if (titulo == null || titulo.isEmpty()) {
@@ -153,9 +173,9 @@ public class MovieOrSerieService {
         }
     }
 
-    public void validateUpdate(String titulo, 
-            Date fechaDeCreacion, 
-            Integer calificacion, 
+    public void validateUpdate(String titulo,
+            Date fechaDeCreacion,
+            Integer calificacion,
             Gender gender) throws ErrorService, ErrorService {
 
         if (titulo == null || titulo.isEmpty()) {

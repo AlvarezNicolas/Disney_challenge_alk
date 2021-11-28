@@ -43,9 +43,9 @@ public class CreateCharacterController {
     @PostMapping("/persistCharacter")
     public String save(RedirectAttributes attribute,
             @RequestParam @NotNull String nombre,
-            @RequestParam @NotNull Integer edad,
-            @RequestParam @NotNull Double peso,
-            @RequestParam @NotNull String historia,
+            @RequestParam @Nullable Integer edad,
+            @RequestParam @Nullable Double peso,
+            @RequestParam @Nullable String historia,
             @RequestParam @Nullable MultipartFile file,
             @RequestParam @NotNull MovieOrSerie movieOrSerie) throws Exception {
         try {

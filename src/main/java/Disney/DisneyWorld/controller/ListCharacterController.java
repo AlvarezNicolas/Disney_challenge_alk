@@ -13,7 +13,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -26,12 +29,30 @@ public class ListCharacterController {
 
     @Autowired
     private CharacterService characterService;
-    
+
     @GetMapping("")
-    public String listCharacters(ModelMap model){
+    public String listCharacters(ModelMap model) {
         List<Figure> characters = characterService.listCharacters();
         model.addAttribute("characters", characters);
         return "characters";
     }
+
+    @GetMapping("/{name}")
+    public String searchByName(@PathVariable @RequestParam String nombre) {
+        characterService.findByName(nombre);
+        return "redirect:/listCharacter";
+    }
+
+    @GetMapping("/{age}")
+    public String searchByAge(@PathVariable @RequestParam Integer edad) {
+        characterService.findByAge(edad);
+        return "redirect:/listCharacter";
+    }
     
+    @GetMapping("/{movies}")
+    public String searchIdMovieOrSerie(@PathVariable @RequestParam String idMovieOrSerie) {
+        characterService.findByIdMovieOrSerie(idMovieOrSerie);
+        return "redirect:/listCharacter";
+    }
+
 }

@@ -7,10 +7,12 @@ package Disney.DisneyWorld.controller;
 
 import Disney.DisneyWorld.entity.Figure;
 import Disney.DisneyWorld.entity.Gender;
+import Disney.DisneyWorld.entity.MovieOrSerie;
 import Disney.DisneyWorld.error.ErrorService;
 import Disney.DisneyWorld.service.MovieOrSerieService;
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.lang.Nullable;
@@ -39,8 +41,8 @@ public class CreateMovieController {
     @PostMapping("/persistMovie")
     public String save(RedirectAttributes attribute,
             @RequestParam @NotNull String titulo,
-            @RequestParam @NotNull Date fechaDeCreacion,
-            @RequestParam @NotNull Integer calificacion,
+            @RequestParam @Nullable Date fechaDeCreacion,
+            @RequestParam @Nullable Integer calificacion,
             @RequestParam @NotNull Figure characters,
             @RequestParam @Nullable MultipartFile file,
             @RequestParam @NotNull Gender gender) throws Exception {
@@ -48,9 +50,11 @@ public class CreateMovieController {
 
             Figure character = new Figure();
             character.equals(characters);
-
-            movieOrSerieService.addMovie(file, titulo, fechaDeCreacion, calificacion, characters, gender);
-
+            Gender gr = new Gender();
+            gr.equals(gender);
+           
+            movieOrSerieService.addMovie(file, titulo, fechaDeCreacion, calificacion, character, gr);
+            
         } catch (ErrorService ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
             attribute.addFlashAttribute("error", ex.getMessage());

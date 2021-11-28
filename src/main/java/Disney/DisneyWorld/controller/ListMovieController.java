@@ -13,7 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -32,5 +34,29 @@ public class ListMovieController {
         List<MovieOrSerie> movies = movieOrSerieService.listMovies();
         model.put("movies", movies);
         return "movies";
+    }
+
+    @GetMapping("/{name}")
+    public String searchByName(@PathVariable @RequestParam String titulo) {
+        movieOrSerieService.findByName(titulo);
+        return "redirect:/listMovie";
+    }
+
+    @GetMapping("/{genre}")
+    public String findByIdGender(@PathVariable @RequestParam String genre) {
+        movieOrSerieService.findByIdGender(genre);
+        return "redirect:/listMovie";
+    }
+
+    @GetMapping("/{ASC}")
+    public String OrderASC() {
+        movieOrSerieService.OrderASC();
+        return "redirect:/listMovie";
+    }
+
+    @GetMapping("/{DESC}")
+    public String OrderDESC() {
+        movieOrSerieService.OrderDESC();
+        return "redirect:/listMovie";
     }
 }
